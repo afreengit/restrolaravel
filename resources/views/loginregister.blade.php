@@ -187,6 +187,7 @@
                                     <div class="login-form-container">
                                         <div class="login-register-form">
                                             <form action="/loginform" method="post">
+                                                {{@csrf_field()}}
                                                 <input type="text" name="email" placeholder="Email id">
                                                 <input type="password" name="password" placeholder="Password">
                                                 <div class="button-box">
@@ -205,7 +206,9 @@
                                 <div id="lg2" class="tab-pane">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form action="registeraction.php" method="post">
+                                            <!-- <form action="/registerform" method="post"> -->
+                                            <form action="/registerform" method="post">
+                                                {{@csrf_field()}}
                                                 <input type="text" name="name" placeholder="Name">
                                                 <input type="email" name="email" placeholder="Email" >
                                                 <input type="password" name="password" placeholder="Password">

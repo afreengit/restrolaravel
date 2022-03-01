@@ -67,24 +67,12 @@
                                         <div class="header-icon-style">
                                             <i class="icon-user icons"></i>
                                         </div>
-                                        <!-- logout begins -->
                                         <?php 
                                         $customer_id=Session::get('customer_id');
-                                        if($customer_id != NULL){
                                         ?>
                                         <div class="login-text-content">
-                                            <p><span>Logout</span></p>
+                                            <p>Logout</span></p>
                                         </div>
-                                        <!-- logout ends -->
-
-                                        <!-- login begins -->
-                                        <?php  }else{?>
-                                        <div class="login-text-content" href=/loginregister>
-                                            <p>Register <br> or <span>Sign in</span></p>
-                                        </div>
-                                        <?php } ?>
-                                        <!-- login ends -->
-
                                     </a>
                                 </div>
                                 <div class="header-wishlist">

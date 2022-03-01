@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use app\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +21,5 @@ use app\Http\Controllers\HomeController;
 //common
 Route::view('/','homepage');
 Route::view('/loginregister','loginregister');
-Route::post('/registerform',[HomeController::class,'registeraction']);
+Route::get('/registerform',[HomeController::class,'registeraction']);
 Route::post('/loginform',[HomeController::class,'loginaction']);

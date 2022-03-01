@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('coupons', function (Blueprint $table) {
-            $table->increments('cp_id');
+            $table->increments('cp_id')->unsigned();
             $table->string('cp_code');
             $table->integer('cp_value');
             $table->integer('cp_cartmin');
             $table->date('cp_expiry');
-            $table->tinyInteger('cp_status');
+            $table->tinyInteger('cp_status')->default('1');
             $table->timestamps();
         });
     }

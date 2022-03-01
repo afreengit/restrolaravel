@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('deliveryboys', function (Blueprint $table) {
-            $table->increments('dl_id');
+            $table->increments('dl_id')->unsigned();
             $table->string('dl_name');
             $table->string('dl_mob');
-            $table->tinyInteger('dl_status');
+            $table->tinyInteger('dl_status')->default('1');
             $table->timestamps();
         });
     }

@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('locations', function (Blueprint $table) {
-            $table->increments('lo_id');
+            $table->increments('lo_id')->unsigned();
             $table->string('lo_name');
-            $table->tinyInteger('lo_status');
+            $table->tinyInteger('lo_status')->default('1');
             $table->integer('lo_deliverycharge');
             $table->timestamps();
         });

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('dishmasters', function (Blueprint $table) {
             $table->increments('dm_id')->unsigned();
+            
             $table->integer('ct_id')->unsigned()->nullable();
             $table->index('ct_id');
             $table->foreign('ct_id')->references('ct_id')->on('categorys')->onDelete('cascade')->onUpdate('cascade');
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->string('dm_description');
             $table->tinyInteger('dm_type');
             $table->string('dm_image');
-            $table->tinyInteger('dm_status');
+            $table->tinyInteger('dm_status')->default('1');
             $table->timestamps();
         });
     }

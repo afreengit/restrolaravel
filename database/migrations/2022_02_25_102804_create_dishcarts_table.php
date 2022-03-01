@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dishcarts', function (Blueprint $table) {
-            $table->increments('dc_id');
-            $table->integer('user_id')->unsigned();
-            $table->index('user_id');
-            $table->foreign('user_id')->references('u_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->increments('dc_id')->unsigned();
+
+            $table->integer('u_id')->unsigned();
+            $table->index('u_id');
+            $table->foreign('u_id')->references('u_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
             $table->integer('dd_id')->unsigned();
             $table->index('dd_id');
             $table->foreign('dd_id')->references('dd_id')->on('dishdetails')->onDelete('cascade')->onUpdate('cascade');

@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dishdetails', function (Blueprint $table) {
-            $table->increments('dd_id')->unsigned()->unique();
+            $table->increments('dd_id')->unsigned();
             $table->string('dd_dish');
             $table->string('dd_portion');
-            $table->float('dd_offerprice');
+            $table->float('dd_offerprice')->nullable();
             $table->float('dd_price');
-            $table->tinyInteger('dd_status');
+            $table->tinyInteger('dd_status')->default('1');
             $table->timestamps();
         });
     }

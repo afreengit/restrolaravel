@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('categorys', function (Blueprint $table) {
-            $table->increments('ct_id')->unsigned()->unique();
+            $table->increments('ct_id')->unsigned();
             $table->string('ct_name');
             $table->tinyInteger('ct_order');
-            $table->tinyInteger('ct_status');
+            $table->tinyInteger('ct_status')->default('1');
             $table->timestamps();
         });
     }

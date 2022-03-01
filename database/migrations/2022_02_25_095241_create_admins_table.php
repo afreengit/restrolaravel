@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->increments('ad_id');
+            $table->increments('ad_id')->unsigned();
             $table->string('ad_uname');
             $table->string('ad_pwd');
             $table->string('ad_email')->unique();
             $table->integer('ad_phone');
             $table->tinyInteger('ad_type');
-            $table->tinyInteger('ad_status');
+            $table->tinyInteger('ad_status')->default('1');
             $table->dateTime('ad_lastlogin');
             $table->timestamps();
         });

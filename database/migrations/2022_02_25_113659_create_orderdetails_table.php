@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('orderdetails', function (Blueprint $table) {
             $table->increments('od_id');
+
             $table->integer('om_id')->unsigned()->nullable();
             $table->index('om_id');
             $table->foreign('om_id')->references('om_id')->on('ordermasters')->onDelete('cascade')->onUpdate('cascade');
+
             $table->integer('dd_id')->unsigned()->nullable();
             $table->index('dd_id');
             $table->foreign('dd_id')->references('dd_id')->on('dishdetails')->onDelete('cascade')->onUpdate('cascade');
+            
             $table->float('od_price');
             $table->float('od_quantity');
             $table->timestamps();
