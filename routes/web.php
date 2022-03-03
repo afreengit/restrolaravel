@@ -18,8 +18,9 @@ use App\Http\Controllers\HomeController;
 //     return view('welcome');
 // });
 
-//common
-Route::view('/','homepage');
+//customer
+Route::get('/',[HomeController::class,'index']);
 Route::view('/loginregister','loginregister');
-Route::get('/registerform',[HomeController::class,'registeraction']);
+Route::post('/registerform',[HomeController::class,'registeraction']);
 Route::post('/loginform',[HomeController::class,'loginaction']);
+Route::get('/products/{ctid}',[HomeController::class,'viewproducts']);

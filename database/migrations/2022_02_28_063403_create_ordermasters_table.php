@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('om_address');
             $table->string('om_location');
             $table->tinyInteger('om_paymentstatus');
-            $table->tinyInteger('om_orderstatus')->default('0');
+            $table->tinyInteger('om_orderstatus')->unsigned()->nullable();
             $table->tinyInteger('om_cancelled')->default('1');
 
             $table->timestamps();

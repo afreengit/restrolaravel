@@ -186,8 +186,12 @@
                                 <div id="lg1" class="tab-pane active">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form action="/loginform" method="post">
-                                                {{@csrf_field()}}
+                                            <!-- <form method="post" action="/loginform"> -->
+                                                <form method="post" action="{{ url('/loginform')}}">
+                                                @csrf
+                                                @if($errors->any())
+                                                <h3>{{$errors->first()}}</h3>
+                                                @endif
                                                 <input type="text" name="email" placeholder="Email id">
                                                 <input type="password" name="password" placeholder="Password">
                                                 <div class="button-box">
@@ -196,8 +200,7 @@
                                                         <label>Remember me</label>
                                                         <a href="#">Forgot Password?</a>
                                                     </div>
-                                                    <input type="submit" name="login" value="Login">
-                                                    <!-- <button type="submit"><span>Login</span></button> -->
+                                                    <button type="submit"><span>Login</span></button>
                                                 </div>
                                             </form>
                                         </div>
@@ -206,9 +209,12 @@
                                 <div id="lg2" class="tab-pane">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <!-- <form action="/registerform" method="post"> -->
-                                            <form action="/registerform" method="post">
-                                                {{@csrf_field()}}
+                                            <form method="post" action="/registerform" >
+                                                @csrf
+                                                @if(\Session::has('success'))
+                                                <p>{{\Session::get('success')}}</p>
+                                                <br/>
+                                                 @endif
                                                 <input type="text" name="name" placeholder="Name">
                                                 <input type="email" name="email" placeholder="Email" >
                                                 <input type="password" name="password" placeholder="Password">

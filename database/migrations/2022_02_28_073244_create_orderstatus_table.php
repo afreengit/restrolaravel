@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orderstatus', function (Blueprint $table) {
             $table->increments('os_id')->unsigned();
 
-            $table->integer('orderstatus')->unsigned()->nullable();
+            $table->tinyInteger('orderstatus')->unsigned()->nullable();
             $table->index('orderstatus');
             $table->foreign('orderstatus')->references('om_orderstatus')->on('ordermasters')->onDelete('cascade')->onUpdate('cascade');
 

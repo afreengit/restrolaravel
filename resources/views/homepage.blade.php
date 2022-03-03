@@ -163,7 +163,7 @@
                 </div>
             </div>
             <!-- mobile-menu-area-start -->
-			<div class="mobile-menu-area">
+			<!-- <div class="mobile-menu-area">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12">
@@ -179,7 +179,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- mobile-menu-area-end -->
         </header>
 
@@ -206,7 +206,7 @@
                         <div class="grid-list-product-wrapper">
                             <div class="product-grid product-view pb-20">
                                 <div class="row">
-                                    <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                   <!--  <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.html">
@@ -222,8 +222,8 @@
                                                 </div>
                                             </div>
 										</div>
-                                    </div>
-									<div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                    </div> -->
+									<!-- <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.html">
@@ -324,8 +324,8 @@
                                                 </div>
                                             </div>
 										</div>
-                                    </div>
-									<div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                    </div> -->
+									<!-- <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.html">
@@ -358,7 +358,7 @@
                                                 </div>
                                             </div>
 										</div>
-                                    </div>
+                                    </div> -->
 								</div>
                             </div>
                             
@@ -370,10 +370,11 @@
                                 <h4 class="shop-sidebar-title">Shop By Categories</h4>
                                 <div class="shop-catigory">
                                     <ul id="faq">
-                                        <li> <a href="#">Vegetables</a> </li>
-                                        <li> <a href="#">Fruits</a></li>
-                                        <li> <a href="#">Red Meat</a></li>
+                                        @foreach($category as $values)
+                                        <li> <a href="{{ url('products/'.$values->ct_id)}}">{{$values->ct_name}}</a> </li>
+                                         @endforeach
                                     </ul>
+                                   
                                 </div>
                             </div>
                         </div>
