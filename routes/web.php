@@ -10,10 +10,11 @@ use App\Http\Controllers\AdminController;
 // });
 
 //common
-Route::view('/','homepage');
+Route::get('/',[HomeController::class,'index']);
 Route::view('/loginregister','loginregister');
 Route::post('/registerform',[HomeController::class,'registeraction']);
 Route::post('/loginform',[HomeController::class,'loginaction']);
+Route::get('/products/{ctid}',[HomeController::class,'viewproducts']);
 
 // admin
 Route::view('/adminhome','Admin.layout');
