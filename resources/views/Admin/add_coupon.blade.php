@@ -4,6 +4,18 @@
       <!-- partial -->
       <!--<div class="main-panel">-->      
         <!--<div class="content-wrapper">-->
+          
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="exampleModalLabel">Add Coupon</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
           <form method="post" action="{{ url('/addcoupon_action')}}">
             @csrf
           <div class="row">
@@ -35,13 +47,10 @@
                           <option value="1">Inactive</option>
                         </select>
                       </div>
-                    <div class="form-group">
-                      <label for="addedon">Addedon</label>
-                      <input type="date" class="form-control" id="add" placeholder="add" name="added">
-                    </div>
                     
+                    <div class="modal-footer">
                     <button type="submit" class="btn btn-primary mr-2" name="coupon_btn">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   </form>
                 </div>
               </div>

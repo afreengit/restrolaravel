@@ -99,6 +99,7 @@ class AdminController extends Controller
     {
 
         $id=$request->input('ct_id');
+        dd($id);
         $data=categorys::where('ct_id','=',$id)->first();
         //$data->ct_name=$request->name;
         dd($data);

@@ -5,7 +5,9 @@
         <!--<div class="content-wrapper">-->
           <!-- <form method="post" action="/insert_action"> -->
             <!-- @csrf -->
-            <form method="post" action="{{ url('/edit_action')}}">
+            
+            <!-- <form method="post" action="{{ url('/edit_action')}}"> -->
+              <form method="post" action="{{ url('/edit_action')}}">
                @csrf
           <div class="row">
       <h1 class="card-title ml10">Update Category</h1>
@@ -15,7 +17,7 @@
 
                   <form class="forms-sample">
                     <div class="form-group">
-                      <input type="hidden" name="id" value="{{$data->ct_id}}">
+                      <!-- <input type="hidden" name="id" value="{{$data->ct_id}}"> -->
                       <label for="category">Title</label>
                       <input type="text" class="form-control" id="category" placeholder="category" name="category" value="{{$data->ct_name}}">
                     </div>
