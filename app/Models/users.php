@@ -11,16 +11,23 @@ use Laravel\Sanctum\HasApiTokens;
 class users extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    
+    protected $table = 'users';
+    protected $primaryKey= 'u_id';
+    protected $keyType= 'int';
+    public $incrementing=true;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'u_name',
+        'u_email',
+        'u_password',
+        'u_phone',
+        'u_home_address',
+        'u_office_address',
     ];
 
     /**
@@ -29,7 +36,7 @@ class users extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'u_password',
         'remember_token',
     ];
 
@@ -41,4 +48,15 @@ class users extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // public function setPasswordAttribute($u_password)
+    // {
+    //      $this->attributes['password']=bcrypt($u_password); 
+    //     
+    // }
+    public function getAuthPassword() 
+    {
+    return $this->u_password;
+    }
 }
