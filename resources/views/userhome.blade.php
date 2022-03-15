@@ -70,20 +70,34 @@
                                         <!-- logout begins -->
                                         <?php 
                                         $customer_id=Session::get('customer_id');
+                                        $customer_name=Session::get('customer_name');
                                         if($customer_id != NULL){
+                                            // echo 'WELCOME'.$customer_name;
                                         ?>
-                                        <div class="login-text-content">
-                                            <p><span>Logout</span></p>
+                                        @if(\Session::has('customer_name'))  
+                                        <p class="btn">WELCOME {{ \Session::get('customer_name')}}</p>
+                                        @endif
+                                        <form action="/logout" method="post">
+                                            @csrf
+                                        <!-- <div class="login-text-content" href="/logout"> -->
+                                           <button type="submit">logout</button>
                                         </div>
+                                        </form>
                                         <!-- logout ends -->
 
                                         <!-- login begins -->
                                         <?php  }else{?>
-                                        <div class="login-text-content" href=/loginregister>
-                                            <p>Register <br> or <span>Sign in</span></p>
+
+                                        
+                                        <div class="login-text-content">
+                                            <p><a href=/register>Register</a> <br> or<a href=/login>Sign in</a></p>
                                         </div>
-                                        <?php } ?>
+
+                                         <?php }  ?>
                                         <!-- login ends -->
+                                        
+
+
 
                                     </a>
                                 </div>
@@ -194,37 +208,37 @@
                 </div>
             </div>
         </div> -->
-
+@if (session()->has('success'))
+<p>{{ session()->get('success') }}</p>
+@endif
         <div class="shop-page-area pt-100 pb-100">
             <div class="container">
                 <div class="row flex-row-reverse">
                     <div class="col-lg-9">
-                        <!-- <div class="banner-area pb-30">
-                            <a href="#"><img alt="this is banner" src="/assets/img/banner/banner-49.jpg"></a>
-                        </div> -->
+                        <div class="banner-area pb-30">
+                            <a href="product-details.html"><img alt="" src="assets/img/banner/banner-49.jpg"></a>
+                        </div>
                         
                         <div class="grid-list-product-wrapper">
                             <div class="product-grid product-view pb-20">
                                 <div class="row">
-                                    @foreach($dish as $values)
-                                    <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
+                                   <!--  <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">
                                                 <a href="product-details.html">
-                                                    <img src="/assets/img/product/product-1.jpg" alt="">
+                                                    <img src="assets/img/product/product-1.jpg" alt="">
                                                 </a>
                                             </div>
                                             <div class="product-content">
                                                 <h4>
-                                                    <a href="product-details.html">{{$values->dm_name}} </a>
+                                                    <a href="product-details.html">PRODUCTS NAME HERE </a>
                                                 </h4>
                                                 <div class="product-price-wrapper">
                                                     <span>$100.00</span>
                                                 </div>
                                             </div>
 										</div>
-                                    </div>
-                                    @endforeach
+                                    </div> -->
 									<!-- <div class="product-width col-xl-4 col-lg-4 col-md-4 col-sm-6 col-12 mb-30">
                                         <div class="product-wrapper">
                                             <div class="product-img">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 
 //default in web.php:
 // Route::get('/', function () {
@@ -11,10 +12,31 @@ use App\Http\Controllers\AdminController;
 
 //common
 Route::get('/',[HomeController::class,'index']);
-Route::view('/loginregister','loginregister');
-Route::post('/registerform',[HomeController::class,'registeraction']);
-Route::post('/loginform',[HomeController::class,'loginaction']);
+// Route::get('/userhome',[HomeController::class,'userhome']);
+
+Route::view('/register','register')->middleware('guest');
+Route::post('/register',[HomeController::class,'registeraction'])->middleware('guest');
+
+Route::view('/login','login')->middleware('guest');
+Route::post('/login',[HomeController::class,'loginaction'])->middleware('guest');
+Route::get('/logout',[HomeController::class,'logout']);
+
+// Route::view('/userexclusive','userexclusive')->middleware('auth');
+
+// Route::view('/productbycategory','productbycategory');
 Route::get('/products/{ctid}',[HomeController::class,'viewproducts']);
+// Route::post('/addtocart/{dmid}',[CartController::class,'add_to_cart'])->middleware('auth');
+Route::post('/addtocart',[CartController::class,'add_to_cart']);
+
+Route::middleware(['auth'])->group(function(){
+Route::view('/userexclusive','userexclusive');
+Route::get('/showcart',[CartController::class,'show_cart']);
+Route::view('/displayprofile','displayprofile');
+Route::post('/updateprofile',[HomeController::class,'updateprofile']);
+});
+
+
+
 
 // admin
 Route::view('/adminhome','Admin.layout');
