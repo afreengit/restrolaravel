@@ -32,7 +32,7 @@
                       <input type="date" class="form-control" id="added" placeholder="date" name="add">
                     </div>
                     
-                    <button type="submit" class="btn btn-primary mr-2" name="delivery_btn">Submit</button>
+                    <button type="submit" class="btn btn-primary mr-2" name="delivery_btn">Save Changes</button>
                     <button class="btn btn-light">Cancel</button>
                   </form>
                 </div>

@@ -24,6 +24,8 @@
                             <th>Expiry</th>
                             <th>Status</th>
                             <th>Addedon</th>
+                            <th>Actions</th>
+
                         </tr>
                       </thead>
                       <tbody>
@@ -41,6 +43,11 @@
                                   ?>
 
                                   <td><?php echo $a; ?></td>
+
+                                  <td><a type="button" class="btn btn-primary" href="{{ url('editcpn/'.$values->cp_id)}}" >edit</a>
+                                  
+                              <a class="btn btn-primary" href="{{'deletecpn/'.$values->cp_id}}" >delete</a>
+                            </td>
                             
                             
                         </tr>
@@ -71,7 +78,6 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <form class="forms-sample">
                     <div class="form-group">
                       <label for="category">Coupon Code</label>
                       <input type="text" class="form-control" id="code" placeholder="coupon code" name="code">
@@ -99,12 +105,34 @@
                     <div class="modal-footer">
                     <button type="submit" class="btn btn-primary mr-2" name="coupon_btn">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
                   </form>
                 </div>
               </div>
             </div>
             
      </div>
-        </form>
+        
         @endsection
-		
+		@section("script")
+<script type="text/javascript">
+$(document).ready(function(){
+$(".modalOpener").click(function(btn){
+  btn.preventDefault();
+  myid=$(this).data("id");
+  myname=$(this).data("catname");
+  $("#catModalHead").html(myid?"Update Category Details":"Create Category");
+  $("#catModalfooter").html(myid?"save changes":"save");
+  $("#catId").val(myid);
+  $("#catName").val(myname);
+  // catName
+  $("#catModal").modal("show");
+});  
+  
+});  
+
+</script>       
+@endsection

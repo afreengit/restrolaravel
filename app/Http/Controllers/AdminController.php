@@ -7,6 +7,13 @@ use App\Models\categorys;
 use App\Models\deliveryboys;
 use App\Models\coupons;
 use App\Models\locations;
+use App\Models\dishdetails;
+use App\Models\dishmasters;
+
+use DB;
+use Session;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
@@ -15,6 +22,7 @@ class AdminController extends Controller
     public function index()
     {
         $category=categorys::all();
+        
         return view("Admin.category",["categorys"=>$category]);
     }
 
@@ -35,6 +43,17 @@ class AdminController extends Controller
         $location=locations::all();
         return view("Admin.location",["locations"=>$location]);
     }
+    public function dishindex()
+    {
+        $dish=dishdetails::all();
+        return view("Admin.add_dish",["dishdetails"=>$dish]);
+    }
+    public function dishdetails()
+    {
+        $dish=dishdetails::all();
+        return view("Admin.create-edit-dish",["dishdetails"=>$dish]);
+    }
+
 
     // adding pages
 
@@ -53,7 +72,7 @@ class AdminController extends Controller
     public function adddeliverboyaction(Request $request)
     {
         $delivery=new deliveryboys();
-        $delivery->dl_name=$request->input('del');
+        $delivery->dl_name=$request->input('delivery');
         $delivery->dl_mob=$request->input('mob');
         $delivery->dl_status=$request->input('status');
         $delivery->save();
@@ -62,13 +81,13 @@ class AdminController extends Controller
 
      public function addcouponaction(Request $request)
     {
-        $delivery=new coupons();
-        $delivery->cp_code=$request->input('code');
-        $delivery->cp_value=$request->input('cart');
-        $delivery->cp_cartmin=$request->input('value');
-        $delivery->cp_expiry=$request->input('expire');
-        $delivery->cp_status=$request->input('status');
-        $delivery->save();
+        $coupon=new coupons();
+        $coupon->cp_code=$request->input('code');
+        $coupon->cp_value=$request->input('cart');
+        $coupon->cp_cartmin=$request->input('value');
+        $coupon->cp_expiry=$request->input('expire');
+        $coupon->cp_status=$request->input('status');
+        $coupon->save();
         return redirect('/coupon');
     }
 
@@ -81,38 +100,201 @@ class AdminController extends Controller
         $location->save();
         return redirect('/location');
     }
+    public function adddishaction(Request $request)
+    {
+        $master=new dishmasters();
+        $master->ct_id=$request->input('ct_id');
+        $master->dm_name=$request->input('dish');
+        $master->dm_description=$request->input('description');
+        $master->dm_type=$request->input('type');
+        $master->dm_type=$request->input('dish_status');
+        if($request->hasfile('dishimage'))
+        {
+            $file=$request->file('dishimage');
+            $extension=$file->getClientOriginalExtension();
+            $filename=time().'.'.$extension;
+            $file->move('uploads/dishimage',$filename);
+            $master->dm_image=$filename;
+        }
+        $master->save();
+        //dd($master);
+       $portions= $request->input('portion');
+       $offers= $request->input('offer');
+       $prices= $request->input('price');
+       $statusarray= $request->input('portion_status');
+       foreach($portions as $index=>$portion){
+        $dish=new dishdetails();
+        $dish->dd_portion=$portion;
+        $dish->dd_offerprice=$offers[$index];
+        $dish->dd_price=$prices[$index];
+        $dish->dd_status=$statusarray[$index];
+        $dish->dm_id=$master->dm_id;
+        $dish->save();
+       }
+        
+
+        return redirect('/dish-details');
+    }
+
 
     // edit action
     public function editcategory($ct_id)
     { 
-        $data=categorys::where('ct_id','=',$ct_id)->first();
+        $data=categorys::find($ct_id);
+
         return view('Admin.categoryedit',compact('data'));
     }
 
     public function editdeliveryboy($dl_id)
     {
         $delivery=deliveryboys::find($dl_id);
+        return view('Admin.editdeliveryboy',compact('delivery'));
     }
+
+    public function editcoupon($cp_id)
+    {
+        $coupon=coupons::find($cp_id);
+        return view('Admin.editcoupon',compact('coupon'));
+    }
+
+    public function editlocation($lo_id)
+    {
+        $location=locations::find($lo_id);
+        return view('Admin.editlocation',compact('location'));
+    }
+
+
 
     // update action
     public function updatecategory(Request $request)
     {
 
-        $id=$request->input('ct_id');
-        dd($id);
-        $data=categorys::where('ct_id','=',$id)->first();
-        //$data->ct_name=$request->name;
-        dd($data);
+        $id=$request->post('id');
+        if($id){
+        $cat=categorys::find($id);}
+        else{
+        $cat=new categorys();     
+        }
+        $cat->ct_name=$request->post('category');
+        $cat->ct_order=$request->post('order');
+        $cat->ct_status=$request->post('status');
+        $cat->save();
+        return redirect('/category');
     }
 
-    // delete action
+     //update deliveryboy
+    
+    public function updatedeliveryboy(Request $request)
+    {
+        $id=$request->post('id');
+        $del=deliveryboys::find($id);
+        $del->dl_name=$request->post('del');
+        $del->dl_mob=$request->post('mob');
+        $del->dl_status=$request->post('status');
+        $del->save();
+        return redirect('/deliveryboy');
+    }
+
+    //update coupon
+
+    public function updatecoupon(Request $request)
+    {
+        $id=$request->post('id');
+        $cpn=coupons::find($id);
+        $cpn->cp_code=$request->post('code');
+        $cpn->cp_value=$request->post('value');
+        $cpn->cp_cartmin=$request->post('cart');
+        $cpn->cp_expiry=$request->post('expire');
+        $cpn->cp_status=$request->post('status');
+        $cpn->save();
+        return redirect('/coupon');
+    }
+
+    //update location
+
+     public function updatelocation(Request $request)
+    {
+        $id=$request->post('id');
+        $loc=locations::find($id);
+        $loc->lo_name=$request->post('location');
+        $loc->lo_status=$request->post('deliverystatus');
+        $loc->lo_deliverycharge=$request->post('delivery');
+        $loc->save();
+        return redirect('/location');
+    }
+    
+    // delete category
     public function categorydelete($ct_id)
     {
     
-        $data=categorys::where('ct_id','=',$ct_id)->first();
-        return view('Admin.category',compact('data'));
-
+        $data=categorys::find($ct_id);
         $data->delete();
         return redirect('/category');
     }
+
+    //delete deliveryboy
+    public function deliveryboydelete($dl_id)
+    {
+    
+        $delivery=deliveryboys::find($dl_id);
+        $delivery->delete();
+        return redirect('/deliveryboy');
+    }
+    
+    //delete coupon
+     public function coupondelete($cp_id)
+    {
+    
+        $coupon=coupons::find($cp_id);
+
+        $coupon->delete();
+        return redirect('/coupon');
+    }
+
+    //delete location
+    public function locationdelete($lo_id)
+    {
+    
+        $location=locations::find($lo_id);
+
+        $location->delete();
+        return redirect('/location');
+    }
+
+    //adminlogin
+
+    public function loginaction(Request $request)
+    {
+         $request->validate([
+            'email' =>"required|email",
+             'password' => 'required|max:10']);    
+        
+        $admin_email=$request->email;
+        
+        $admin_password=$request->password;
+        $result=DB::table('admins')->where('ad_email',$admin_email)->where('ad_pwd',$admin_password)->first();
+
+        
+                                
+
+        if($result){
+            Session::put('adminname',$result->ad_uname);
+            Session::put('adminid',$result->ad_id);
+            return redirect('/adminhome');
+        }else{
+            Session::put('message','Email or password invalid');
+            return redirect('/admin');
+        }
+        }
+
+    public function logout(Request $request)
+    {
+      Auth::logout();
+      Session::flush();
+      return redirect('/admin');
+    }
 }
+
+
+
+

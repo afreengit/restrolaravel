@@ -22,6 +22,8 @@
                             <th>status</th>
                             <th>Delivery Charge</th>
                             <th>Addedon</th>
+                            <th>Actions</th>
+
                         </tr>
                       </thead>
                       <tbody>
@@ -41,7 +43,10 @@
                                   ?>
 
                                   <td><?php echo $a; ?></td>
-                            
+                             <td><a type="button" class="btn btn-primary" href="{{ url('editloc/'.$values->lo_id)}}" >edit</a>
+                                  
+                              <a class="btn btn-primary" href="{{'deleteloc/'.$values->lo_id}}" >delete</a>
+                            </td>
                             
                         </tr>
                         @endforeach
@@ -75,7 +80,6 @@
             <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <form class="forms-sample">
                     <div class="form-group">
                       <label for="category">Location</label>
                       <input type="text" class="form-control" id="location" placeholder="location" name="location">
@@ -97,13 +101,17 @@
                     <button type="submit" class="btn btn-primary mr-2" name="category_btn">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
                   </form>
                 </div>
               </div>
             </div>
             
      </div>
-        </form>
+        
 
         @endsection
 		

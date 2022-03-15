@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orderstatus', function (Blueprint $table) {
-            $table->increments('os_id')->unsigned();
-
-            $table->tinyInteger('os_status')->unsigned()->nullable();
-            $table->foreign('os_status')->references('om_orderstatus')->on('ordermasters')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->timestamps();
+        Schema::table('dishmasters', function (Blueprint $table) {
+        
+            // $table->dropForeign('dishmasters_ct_id_foreign');
+            $table->dropColumn('ct_id');
         });
     }
 
@@ -30,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderstatus');
+        Schema::table('dishmasters', function (Blueprint $table) {
+            //
+        });
     }
 };

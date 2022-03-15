@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,19 +36,19 @@
           <a class="navbar-brand brand-logo-mini" href="index.php"><img src="{{asset('adminassets/images/logo.png')}}" alt="logo"/></a>
         </div>
         <ul class="navbar-nav navbar-nav-right">
-          
-          <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <span class="nav-profile-name"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="logout.php">
-                <i class="mdi mdi-logout text-primary"></i>
-                Logout
-              </a>
+          <!-- <a href="/logout">Logout</a> -->
+          <!-- <li class="nav-item nav-profile dropdown"> -->
+          <!-- data-toggle="dropdown" id="profileDropdown"--><a href="{{ url('logout/')}}">Logout 
+              <!-- <span class="nav-profile-name"></span> -->
+            </a> 
+            <!-- <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown"> -->
+              <!-- <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="">
+                <i class="mdi mdi-logout text-primary"></i> -->
+                
+              <!-- </a>
             </div>
-          </li>
+          </li> -->
           
           <li class="nav-item nav-toggler-item-right d-lg-none">
             <button class="navbar-toggler align-self-center" type="button" data-toggle="offcanvas">
@@ -65,7 +66,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">
+            <a class="nav-link" href="/adminhome">
               <i class="mdi mdi-view-quilt menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -104,7 +105,7 @@
           </li>
       
       <li class="nav-item">
-            <a class="nav-link" href="dishmaster.php">
+            <a class="nav-link" href="/dish-details">
               <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">Dish</span>
             </a>
@@ -170,5 +171,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+  @yield("script")
 </body>
 </html>

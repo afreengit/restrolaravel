@@ -7,7 +7,7 @@
             <div class="card-body">
               <h1>Category Details</h1>
                <!--<a href="/add_category" class="btn btn-primary">Add Category</a>-->
-               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+               <button type="button" class="btn btn-primary modalOpener"  data-id="" data-catname="" data-order="0" data-active="0">
   Add Category
 </button> 
               <div class="row">
@@ -21,7 +21,7 @@
                             <th>Order</th>
                             <th>Status</th>
                             <th>addedon</th>
-                            <th></th>
+                            <th>Actions</th>
                             
                         </tr>
                       </thead>
@@ -37,9 +37,12 @@
 
                                   <td><?php echo $a; ?></td>
                            
-                              <!-- <td><a class="btn btn-primary" href="edit/.{{$values->ct_id}}" >edit</a> -->
-                                <td><a class="btn btn-primary" href="{{ url('edit/'.$values->ct_id)}}">edit</a>
-                              <a class="btn btn-primary" href="{{'delete/'.$values->ct_id}}" >delete</a>
+                              
+
+                                <td>
+                                  
+                              <a class="btn btn-primary modalOpener" data-id="{{$values->ct_id}}" data-catname="{{$values->ct_name}}" dat-order="{{$values->ct_order}}" data-active="{{$values->ct_status}}">edit</a>
+                              <a type="button" class="btn btn-danger" href="{{url('delete/'.$values->ct_id)}}">delete</a>
                             </td>
                             
                         </tr>
@@ -52,70 +55,68 @@
             </div>
           </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Add Category
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+
+<div class="modal fade" id="catModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="exampleModalLabel">Add Category</h1>
+        <h5 class="modal-title" id="catModalHead">Update Category Details</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form method="post" action="{{ url('/insert_action')}}">
       <div class="modal-body">
-         
+      
+                  <form method="post" action="{{ url('/category_action')}}">
                @csrf
-          <div class="row">
-      <h1 class="card-title ml10"></h1>
-            <div class="col-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <form class="forms-sample">
                     <div class="form-group">
+                       <input type="hidden" name="id" id="catId" value=""> 
                       <label for="category">Title</label>
-                      <input type="text" class="form-control" id="category" placeholder="category" name="category">
+                      <input type="text" class="form-control"  placeholder="category" id="catName" name="category" value="">
                     </div>
                     <div class="form-group">
                       <label for="order">order</label>
-                      <input type="text" class="form-control" id="order" placeholder="order" name="order">
+                      <input type="text" class="form-control" id="order" placeholder="order" name="order" value=""> 
                     </div>
                     <div class="form-group">
                       <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status">
+                        <select class="form-control" id="status" name="status"  >
                           <option value="0">Active</option>
                           <option value="1">Inactive</option>
                         </select>
                       </div>
                     
-                    <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary mr-2" name="category_btn">Submit</button>
-                    
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  </div>
+                     <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary mr-2" name="category_btn" id="catModalfooter">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
                   </form>
-                </div>
-              </div>
-            </div>
+                 
             
      </div>
-       
-
-      </div>
-
-
-      
-      
-       </form>
-    </div>
-  </div>
+   </div>
+ </div>
 </div>
-            
-
-
+ 
 @endsection
-		
+@section("script")
+<script type="text/javascript">
+$(document).ready(function(){
+$(".modalOpener").click(function(btn){
+  btn.preventDefault();
+  myid=$(this).data("id");
+  myname=$(this).data("catname");
+  $("#catModalHead").html(myid?"Update Category Details":"Create Category");
+  $("#catModalfooter").html(myid?"save changes":"save");
+  $("#catId").val(myid);
+  $("#catName").val(myname);
+  // catName
+  $("#catModal").modal("show");
+});  
+  
+});  
+
+</script>       
+@endsection

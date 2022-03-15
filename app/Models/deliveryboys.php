@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class deliveryboys extends Model
 {
     use HasFactory;
+    protected $table='deliveryboys';
+    protected $primaryKey='dl_id';
+    protected $keyType = 'int';
+    public $incrementing =true;
 }
