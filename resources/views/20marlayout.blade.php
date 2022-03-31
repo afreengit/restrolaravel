@@ -19,7 +19,10 @@
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
         <script src="{{asset('assets/js/vendor/modernizr-2.8.3.min.js')}}"></script>
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!--  sweetalert links:-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
     </head>
     <body>
         <!-- header start -->
@@ -29,8 +32,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-12 col-sm-4">
                             <div class="logo">
-                                <a href="/homepage">
-                                    <img alt="" src="assets/img/logo/restrologo7.jpg">
+                                <a href="/">
+                                    <img alt="logo" src="{{asset('assets/img/logo/restrologo7.jpg')}}">
                                 </a>
                             </div>
                         </div>
@@ -43,14 +46,11 @@
                                         <div class="login-text-content">
                                             @auth
                                             Welcome{{auth()->user()->u_name}}!
-                                             <form action="/customerlogout" method="get">
-                                            @csrf
-                                        <!-- <div class="login-text-content" href="/logout"> -->
-                                           <button type="submit">logout</button>
-                                        </form>
+                                            <p><a href=/customerlogout style="color: red">Logout</a></p>
                                             @else
                                             <p><a href=/register>Register</a> 
-                                                <br> or<a href=/login>Sign in</a></p>
+                                            <br> or
+                                            <a href=/login style="color: red" >Sign in</a></p>
                                             @endauth
                                         </div> 
                                 </div>
@@ -60,10 +60,10 @@
                                 </div>
 
                                 @auth
-                                <!-- <a href="/showcart" style="color:red">showcart</a> -->
+                                <a href="/showcart">
                                 <!-- shopping cart link begins -->
                                 <div class="header-cart">
-                                    <a href="#">
+                                    <!-- <a href="/showcart"> -->
                                         <div class="header-icon-style">
                                             <i class="icon-handbag icons"></i>
                                             <span class="count-style">02</span>
@@ -72,10 +72,10 @@
                                             <span class="digit">My Cart</span>
                                             <span class="cart-digit-bold">$209.00</span>
                                         </div>
-                                    </a>
-                                    
+                                    <!-- </a> -->
                                 </div>
                                 <!-- shopping cart link ends -->
+                                </a>
                                 @endauth
                             </div>
                         </div>
@@ -100,9 +100,13 @@
                                         </li>
                                         <li><a href="about-us.html">about</a></li>
                                         <li><a href="contact.html">contact us</a></li>
+                                       <!--  <li class="main-menu-right"><input type="text" name="" placeholder="Search for dishes..">
+                                            <button class="searchbutton">Search</button> -->
+
                                     </ul>
                                 </nav>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -110,87 +114,29 @@
         </header>
         <!-- header ends -->
 
-		<div class="breadcrumb-area gray-bg">
-            <div class="container">
-                <div class="breadcrumb-content">
-                    <ul>
-                        <li><a href="/homepage">Home</a></li>
-                        <li class="active"><a href="/profile">My Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+@yield('content')
+@yield('script')
 
- <div class="login-register-area pt-95 pb-100">
-            <div class="container">
-                 <h5 style="color:orange"> {{Session::get('success')}}</h5>
-                <div class="row">
-                    <div class="col-lg-7 col-md-12 ml-auto mr-auto">
-                        <div class="login-register-wrapper">
-                            <div class="login-register-tab-list nav">
-                                <a class="active" data-toggle="tab" href="#lg1">
-                                    <h4>My Profile </h4>
-                                </a>
-                               
-                            </div>
-                            <div class="tab-content">
-                                <div id="lg1" class="tab-pane active">
-                                    <div class="login-form-container">
-                                        <div class="login-register-form">
-                                            <form method="post" action="{{ url('/updateprofile')}}">
-                                                @csrf
-
-                                                <label>Username:</label>
-                                                 <input type="text" name="u_name" id="u_name" value="{{ Auth::user()->u_name }}">
-                                                 @error('u_name')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-                                                 
-                                                <label>Email:</label>
-                                                <input type="email" name="u_email" id="u_email" value="{{ Auth::user()->u_email }}"> 
-                                                @error('u_email')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Phone:</label>
-                                                <input type="number" name="u_phone" id="u_phone" value="{{Auth::user()->u_phone}}">
-                                                @error('u_phone')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Home address:</label>
-                                                <input type="text" name="u_home_address" id="u_home_address" value="{{Auth::user()->u_home_address}}">
-                                                @error('u_home_address')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Office address:</label>
-                                                <input type="text" name="u_office_address" id="u_office_address" value="{{Auth::user()->u_office_address}}">
-                                                @error('u_office_address')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <input type="hidden" name="u_id" id="u_id" value="{{Auth::user()->u_id}}">
-
-                                                <div class="button-box">
-                                                    <button type="submit"><span>Update Profile</span></button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+        <!-- sidebar area begins -->
+                    <div class="col-lg-3">
+                        <div class="shop-sidebar-wrapper gray-bg-7 shop-sidebar-mrg">
+                            <div class="shop-widget">
+                                <h4 class="shop-sidebar-title">Shop By Categories</h4>
+                                <div class="shop-catigory">
+                                    <ul id="faq">
+                                        @foreach($category as $values)
+                                        <li> <a href="{{ route('productss',[$values->ct_id]) }}">{{$values->ct_name}}</a> </li>
+                                         @endforeach
+                                    </ul>   
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
+                    <!-- sidebar area ends -->
                 </div>
             </div>
         </div>
-
-
-
-
-<div class="footer-area black-bg-2 pt-70">
+        <div class="footer-area black-bg-2 pt-70">
             <div class="footer-bottom-area border-top-4">
                 <div class="container">
                     <div class="row">

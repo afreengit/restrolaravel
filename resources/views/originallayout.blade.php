@@ -43,7 +43,7 @@
                                         <div class="login-text-content">
                                             @auth
                                             Welcome{{auth()->user()->u_name}}!
-                                             <form action="/customerlogout" method="get">
+                                             <form action="/logout" method="get">
                                             @csrf
                                         <!-- <div class="login-text-content" href="/logout"> -->
                                            <button type="submit">logout</button>
@@ -60,10 +60,11 @@
                                 </div>
 
                                 @auth
-                                <!-- <a href="/showcart" style="color:red">showcart</a> -->
+                                <a href="/showcart" style="color:red">showcart</a>
                                 <!-- shopping cart link begins -->
                                 <div class="header-cart">
                                     <a href="#">
+                                        <a href="/showcart">
                                         <div class="header-icon-style">
                                             <i class="icon-handbag icons"></i>
                                             <span class="count-style">02</span>
@@ -73,7 +74,44 @@
                                             <span class="cart-digit-bold">$209.00</span>
                                         </div>
                                     </a>
-                                    
+                                    <div class="shopping-cart-content">
+                                        <ul>
+                                            <li class="single-shopping-cart">
+                                                <div class="shopping-cart-img">
+                                                    <a href="#"><img alt="" src="assets/img/cart/cart-1.jpg"></a>
+                                                </div>
+                                                <div class="shopping-cart-title">
+                                                    <h4><a href="#">Phantom Remote </a></h4>
+                                                    <h6>Qty: 02</h6>
+                                                    <span>$260.00</span>
+                                                </div>
+                                                <div class="shopping-cart-delete">
+                                                    <a href="#"><i class="ion ion-close"></i></a>
+                                                </div>
+                                            </li>
+                                            <li class="single-shopping-cart">
+                                                <div class="shopping-cart-img">
+                                                    <a href="#"><img alt="" src="assets/img/cart/cart-2.jpg"></a>
+                                                </div>
+                                                <div class="shopping-cart-title">
+                                                    <h4><a href="#">Phantom Remote</a></h4>
+                                                    <h6>Qty: 02</h6>
+                                                    <span>$260.00</span>
+                                                </div>
+                                                <div class="shopping-cart-delete">
+                                                    <a href="#"><i class="ion ion-close"></i></a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="shopping-cart-total">
+                                            <h4>Shipping : <span>$20.00</span></h4>
+                                            <h4>Total : <span class="shop-total">$260.00</span></h4>
+                                        </div>
+                                        <div class="shopping-cart-btn">
+                                            <a href="/showcart">view cart</a>
+                                            <a href="checkout.html">checkout</a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- shopping cart link ends -->
                                 @endauth
@@ -90,19 +128,16 @@
                                 <nav>
                                     <ul>
                                         <li><a href="/">Home</a></li>
-                                        <li>
-                                            <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">My profile</a>
-
-                                            <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                            <a class="dropdown-item" href="{{ url('/displayprofile') }}" style="color:black;">Update</a>
-                                            <a class="dropdown-item" href="{{ url('/changepassword') }}" style="color:black;">Change password</a>
-                                            </div>
-                                        </li>
+                                        <li><a href="/displayprofile">My profile</a></li>
                                         <li><a href="about-us.html">about</a></li>
                                         <li><a href="contact.html">contact us</a></li>
+                                       <!--  <li class="main-menu-right"><input type="text" name="" placeholder="Search for dishes..">
+                                            <button class="searchbutton">Search</button> -->
+
                                     </ul>
                                 </nav>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -110,87 +145,29 @@
         </header>
         <!-- header ends -->
 
-		<div class="breadcrumb-area gray-bg">
-            <div class="container">
-                <div class="breadcrumb-content">
-                    <ul>
-                        <li><a href="/homepage">Home</a></li>
-                        <li class="active"><a href="/profile">My Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+@yield('content')
+@yield('script')
 
- <div class="login-register-area pt-95 pb-100">
-            <div class="container">
-                 <h5 style="color:orange"> {{Session::get('success')}}</h5>
-                <div class="row">
-                    <div class="col-lg-7 col-md-12 ml-auto mr-auto">
-                        <div class="login-register-wrapper">
-                            <div class="login-register-tab-list nav">
-                                <a class="active" data-toggle="tab" href="#lg1">
-                                    <h4>My Profile </h4>
-                                </a>
-                               
-                            </div>
-                            <div class="tab-content">
-                                <div id="lg1" class="tab-pane active">
-                                    <div class="login-form-container">
-                                        <div class="login-register-form">
-                                            <form method="post" action="{{ url('/updateprofile')}}">
-                                                @csrf
-
-                                                <label>Username:</label>
-                                                 <input type="text" name="u_name" id="u_name" value="{{ Auth::user()->u_name }}">
-                                                 @error('u_name')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-                                                 
-                                                <label>Email:</label>
-                                                <input type="email" name="u_email" id="u_email" value="{{ Auth::user()->u_email }}"> 
-                                                @error('u_email')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Phone:</label>
-                                                <input type="number" name="u_phone" id="u_phone" value="{{Auth::user()->u_phone}}">
-                                                @error('u_phone')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Home address:</label>
-                                                <input type="text" name="u_home_address" id="u_home_address" value="{{Auth::user()->u_home_address}}">
-                                                @error('u_home_address')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <label>Office address:</label>
-                                                <input type="text" name="u_office_address" id="u_office_address" value="{{Auth::user()->u_office_address}}">
-                                                @error('u_office_address')
-                                                <p>{{ $message }}</p>
-                                                @enderror
-
-                                                <input type="hidden" name="u_id" id="u_id" value="{{Auth::user()->u_id}}">
-
-                                                <div class="button-box">
-                                                    <button type="submit"><span>Update Profile</span></button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
+        <!-- sidebar area begins -->
+                    <div class="col-lg-3">
+                        <div class="shop-sidebar-wrapper gray-bg-7 shop-sidebar-mrg">
+                            <div class="shop-widget">
+                                <h4 class="shop-sidebar-title">Shop By Categories</h4>
+                                <div class="shop-catigory">
+                                    <ul id="faq">
+                                        @foreach($category as $values)
+                                        <li> <a href="{{ url('products/'.$values->ct_id)}}">{{$values->ct_name}}</a> </li>
+                                         @endforeach
+                                    </ul>   
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
+                    <!-- sidebar area ends -->
                 </div>
             </div>
         </div>
-
-
-
-
-<div class="footer-area black-bg-2 pt-70">
+        <div class="footer-area black-bg-2 pt-70">
             <div class="footer-bottom-area border-top-4">
                 <div class="container">
                     <div class="row">

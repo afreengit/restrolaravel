@@ -1,0 +1,76 @@
+Online Food Ordering
+Modules:
+-Admin
+-Customer
+
+ADMIN:
+1.Customer management
+   View,Enable/disable
+2.Category management
+3.Dish management
+   Add,Edit,Delete,Active/inactive
+   Attr:Veg/non-veg,Name,Description(optional),Category id,Image(mandatory),Bestseller,
+   	Portion-price,
+4.Order 
+   Order details,amount,customer,delivery status
+5.Delivery agent
+   Details
+6.Coupon
+   Details,Enable/disable,Validity
+7.Admin user management
+
+CUSTOMER:
+1.Register with email/login
+2.Dishes (Veg/non-veg)
+   Price,portion,quantity,add-ons
+3.Profile
+   Name,email,contact no:,address(home/office),order history
+4.Cart
+   Min.value,order,total amount,gst,delivery charge
+5.Checkout
+   Payment mode(cash on delivery),location(areas),address
+
+
+Additional features:
+1.Payment gateway
+2.Rating
+3.Complaints
+4.Tracking
+5.Delivery agent module
+6.Dish Filters
+7.Register via gmail/facebook
+8.Dish Quantity
+
+
+
+PROGRESS:-
+
+-DB AND MIGRATIONS
+
+-ADMIN:
+VIEW,ADD CATEGORY
+VIEW,ADD DELIVERY BOY
+
+-CUSTOMER:
+
+28-TEMPLATE
+1-REGISTER
+2-LOGIN,LOGOUT
+3-MAIN PAGE
+4-SHOP BY CATEGORIES
+
+7-REGISTER VALIDATION
+8-LOGIN VALIDATION
+9-ADD TO CART-adding to cart in db
+10-SEARCH BOX-incomplete
+11-PROFILE UPDATION-without pwd
+
+14-NIL
+15-
+
+CART COUNT
+SEARCH BOX
+VEG AND NON-VEG RADIO BUTTONS
+TOTAL
+CHECKOUT
+ORDER HISTORY

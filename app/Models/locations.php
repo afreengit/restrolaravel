@@ -11,5 +11,10 @@ class locations extends Model
     protected $table='locations';
     protected $primaryKey='lo_id';
     protected $keyType = 'int';
-    public $incrementing =true;
+    public $incrementing =true; 
+    protected $fillable[
+        'lo_name',
+        'lo_status',
+        'lo_deliverycharge',
+    ];
 }
