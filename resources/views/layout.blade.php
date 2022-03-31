@@ -19,7 +19,16 @@
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
         <link rel="stylesheet" href="{{asset('assets/css/responsive.css')}}">
         <script src="{{asset('assets/js/vendor/modernizr-2.8.3.min.js')}}"></script>
-         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- jquery cdn link -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <!--  sweetalert links:-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.2.0/sweetalert2.all.min.js"></script>
+        <!-- bootstrap to get glyphicon icons -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        
     </head>
     <body>
         <!-- header start -->
@@ -29,8 +38,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-12 col-sm-4">
                             <div class="logo">
-                                <a href="/homepage">
-                                    <img alt="" src="assets/img/logo/restrologo7.jpg">
+                                <a href="/">
+                                    <img alt="logo" src="{{asset('assets/img/logo/restrologo7.jpg')}}">
                                 </a>
                             </div>
                         </div>
@@ -43,76 +52,33 @@
                                         <div class="login-text-content">
                                             @auth
                                             Welcome{{auth()->user()->u_name}}!
-                                             <form action="/logout" method="get">
-                                            @csrf
-                                        <!-- <div class="login-text-content" href="/logout"> -->
-                                           <button type="submit">logout</button>
-                                        </form>
+                                            <p><a href=/customerlogout style="color: red">Logout</a></p>
                                             @else
                                             <p><a href=/register>Register</a> 
-                                                <br> or<a href=/login>Sign in</a></p>
+                                            <br> or
+                                            <a href=/login style="color: red" >Sign in</a></p>
                                             @endauth
                                         </div> 
                                 </div>
 
-                                <div class="header-wishlist">
-                                   &nbsp;
-                                </div>
-
                                 @auth
-                                <a href="/showcart" style="color:red">showcart</a>
+                                <a href="/showcart">
                                 <!-- shopping cart link begins -->
                                 <div class="header-cart">
-                                    <a href="#">
+                                    <!-- <a href="/showcart"> -->
                                         <div class="header-icon-style">
                                             <i class="icon-handbag icons"></i>
-                                            <span class="count-style">02</span>
+                                            <!-- cart count -->
+                                            <span class="count-style">0</span>
                                         </div>
                                         <div class="cart-text">
                                             <span class="digit">My Cart</span>
                                             <span class="cart-digit-bold">$209.00</span>
                                         </div>
-                                    </a>
-                                    <div class="shopping-cart-content">
-                                        <ul>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="assets/img/cart/cart-1.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Phantom Remote </a></h4>
-                                                    <h6>Qty: 02</h6>
-                                                    <span>$260.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="ion ion-close"></i></a>
-                                                </div>
-                                            </li>
-                                            <li class="single-shopping-cart">
-                                                <div class="shopping-cart-img">
-                                                    <a href="#"><img alt="" src="assets/img/cart/cart-2.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="#">Phantom Remote</a></h4>
-                                                    <h6>Qty: 02</h6>
-                                                    <span>$260.00</span>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="ion ion-close"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-total">
-                                            <h4>Shipping : <span>$20.00</span></h4>
-                                            <h4>Total : <span class="shop-total">$260.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-btn">
-                                            <a href="/showcart">view cart</a>
-                                            <a href="checkout.html">checkout</a>
-                                        </div>
-                                    </div>
+                                    <!-- </a> -->
                                 </div>
                                 <!-- shopping cart link ends -->
+                                </a>
                                 @endauth
                             </div>
                         </div>
@@ -126,17 +92,31 @@
                             <div class="main-menu">
                                 <nav>
                                     <ul>
-                                        <li><a href="/">Home</a></li>
-                                        <li><a href="/displayprofile">My profile</a></li>
-                                        <li><a href="about-us.html">about</a></li>
-                                        <li><a href="contact.html">contact us</a></li>
-                                       <!--  <li class="main-menu-right"><input type="text" name="" placeholder="Search for dishes..">
-                                            <button class="searchbutton">Search</button> -->
-
+                                        @php
+                                        $category = App\Models\Categorys::where('ct_status','1')->get();
+                                        @endphp
+                                        @foreach($category as $values)
+                                       <!--  <li><a href="{{ url('products'.'/'.$values->ct_name,[$values->ct_id]) }}">{{ $values->ct_name }}</a></li> -->
+                                        <li>
+                                        <a href="{{ url('products/'.$values->ct_name.'/'.$values->ct_id)}}">{{$values->ct_name}}</a>
+                                        </li>
+                                        @endforeach
+                                        @auth
+                                        <li>
+                                            <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">My profile</a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                            <a class="dropdown-item" href="{{ url('/displayprofile') }}" style="color:black;">Update</a>
+                                            <a class="dropdown-item" href="{{ url('/changepassword') }}" style="color:black;">Change password</a>
+                                            </div>
+                                        </li>
+                                        @endauth
                                     </ul>
                                 </nav>
+
                             </div>
-                            
+                            <div class="main-menu-right">
+                                 <input type="checkbox" id="vegcheckbox" > <p style="color:white">Veg Only</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,25 +124,32 @@
         </header>
         <!-- header ends -->
 
+
 @yield('content')
 @yield('script')
 
-        <!-- sidebar area begins -->
-                    <div class="col-lg-3">
-                        <div class="shop-sidebar-wrapper gray-bg-7 shop-sidebar-mrg">
-                            <div class="shop-widget">
-                                <h4 class="shop-sidebar-title">Shop By Categories</h4>
-                                <div class="shop-catigory">
-                                    <ul id="faq">
-                                        @foreach($category as $values)
-                                        <li> <a href="{{ url('products/'.$values->ct_id)}}">{{$values->ct_name}}</a> </li>
-                                         @endforeach
-                                    </ul>   
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- sidebar area ends -->
+
+<script>
+$(document).ready(function(){
+
+    $('#vegcheckbox').click(function(){
+        $("#emptynot").remove();
+        if($(this).prop("checked") == true)
+        { 
+            $('.class-non-veg').hide();
+            if($(".class-veg").length<=0)
+            {
+                $("<div class='alert alert-danger col-xl-12' id='emptynot'>").html("No vegitarian dishes to display").appendTo("#productbegins");
+            }
+        }
+        else if($(this).prop("checked") == false)
+        {
+            $('.class-non-veg').show();
+        }
+    }); //end of vegcheckbox
+
+});//end of ready fn
+</script>
                 </div>
             </div>
         </div>
@@ -192,9 +179,9 @@
             </div>
         </div>
         
-        <!-- all js here -->
+        <!-- custom js here -->
         <!-- <script src="{{asset('assets/js/vendor/jquery-1.12.0.min.js')}}"></script> -->
-        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
         <script src="{{asset('assets/js/popper.js')}}"></script>
         <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
         <script src="{{asset('assets/js/imagesloaded.pkgd.min.js')}}"></script>
@@ -203,6 +190,7 @@
         <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
         <script src="{{asset('assets/js/plugins.js')}}"></script>
         <script src="{{asset('assets/js/main.js')}}"></script>
+        
     </body>
 
 </html>

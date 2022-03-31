@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('dishmasters', function (Blueprint $table) {
         
-            // $table->dropForeign('dishmasters_ct_id_foreign');
+            $table->dropForeign('dishmasters_ct_id_foreign');
             $table->dropColumn('ct_id');
         });
     }

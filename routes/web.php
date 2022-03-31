@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 //default in web.php:
 // Route::get('/', function () {
@@ -12,27 +13,31 @@ use App\Http\Controllers\CartController;
 
 //common
 Route::get('/',[HomeController::class,'index']);
-// Route::get('/userhome',[HomeController::class,'userhome']);
-
-Route::view('/register','register')->middleware('guest');
-Route::post('/register',[HomeController::class,'registeraction'])->middleware('guest');
-
-Route::view('/login','login')->middleware('guest');
-Route::post('/login',[HomeController::class,'loginaction'])->middleware('guest');
-Route::get('/logout',[HomeController::class,'logout']);
-
-// Route::view('/userexclusive','userexclusive')->middleware('auth');
-
 // Route::view('/productbycategory','productbycategory');
-Route::get('/products/{ctid}',[HomeController::class,'viewproducts']);
+Route::get('/products/{ctname}/{ctid}',[HomeController::class,'viewproducts']);
+// Route::get('/products/{ctname}',[HomeController::class,'viewproducts'])->name('productss'); working products
 // Route::post('/addtocart/{dmid}',[CartController::class,'add_to_cart'])->middleware('auth');
 Route::post('/addtocart',[CartController::class,'add_to_cart']);
 
+Route::middleware(['guest'])->group(function(){
+Route::view('/register','register');
+Route::post('/register',[HomeController::class,'registeraction'])->name('register');
+Route::view('/login','login');
+Route::post('/login',[HomeController::class,'loginaction'])->name('login');
+});
+
+// Route::view('/userexclusive','userexclusive')->middleware('auth');
 Route::middleware(['auth'])->group(function(){
 Route::view('/userexclusive','userexclusive');
-Route::get('/showcart',[CartController::class,'show_cart']);
 Route::view('/displayprofile','displayprofile');
-Route::post('/updateprofile',[HomeController::class,'updateprofile']);
+Route::post('/updateprofile',[HomeController::class,'updateprofile'])->name('updateprofile');
+Route::view('/changepassword','changepassword');
+Route::post('/changepasswordaction',[HomeController::class,'changepasswordaction'])->name('changepasswordaction');
+Route::get('/showcart',[CartController::class,'show_cart'])->name('showcart');
+Route::post('/deletefromcart',[CartController::class,'delete_from_cart'])->name('deletefromcart');
+Route::post('/updatecart',[CartController::class,'update_cart'])->name('updatecart');
+Route::get('/checkout',[CheckoutController::class,'index'])->name('checkout');
+Route::get('/customerlogout',[HomeController::class,'logout'])->name('customerlogout');
 });
 
 

@@ -12,5 +12,10 @@ class categorys extends Model
     protected $primaryKey='ct_id';
     protected $keyType = 'int';
     public $incrementing =true;
-
+    protected $fillable = [
+        'ct_name',
+        'ct_order',
+        'ct_status',
+    ];
+ 
 }

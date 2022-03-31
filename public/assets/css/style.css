@@ -241,6 +241,7 @@ input {
     color: #626262;
     width: 100%;
 }
+
 select {
     width: 100%;
     background: transparent;
@@ -5315,4 +5316,17 @@ h5.panel-title span {
 .pagination-style .owl-dot.active {
     height: 10px;
     width: 30px;
+}
+icon-shape {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.icon-sm {
+    width: 2rem;
+    height: 2rem;
+    
 }
