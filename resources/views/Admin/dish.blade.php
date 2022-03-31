@@ -1,15 +1,13 @@
 @extends("Admin.layout")
 @section("content")
-      <!-- partial -->
-      <!--<div class="main-panel">-->
-        <!--<div class="content-wrapper">-->
+      
           <div class="card">
             <div class="card-body">
-              <h1>Coupon Details</h1>
-               <!-- <a href="/add_coupon" class="btn btn-primary">Add coupon</a>  -->
-               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Coupon
-  
-</button>
+              <h1>Dish Details</h1>
+                <a href="/dish-details" class="btn btn-primary">Add Dish</a>  
+               
+
+
               <div class="row">
                 <div class="col-12">
                   <div class="table-responsive">
@@ -17,41 +15,59 @@
                     <table id="order-listing" class="table">
                       <thead>
                         <tr>
-                            
-                            <th>Code</th>
-                            <th>Value</th>
-                            <th>mininmum Cart</th>
-                            <th>Expiry</th>
+                            <th>category</th>
+                            <th>Dish</th>
+                            <th>Type</th>
+                            <th>Image</th>
                             <th>Status</th>
-                            <th>Addedon</th>
+                            <th>Details</th>
                             <th>Actions</th>
 
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($coupons as $values)  
+                        @foreach($dish as $values)  
                         <tr>
-                            <td>{{$values->cp_code}}</td>
-                                  <td>{{$values->cp_value}}</td>
-                                  <td>{{$values->cp_cartmin}}</td>
-                                  <td>{{$values->cp_expiry}}</td>
-                                  <td>{{$values->cp_status}}</td>
+                          
+                          
+                     <td>{{ $values->category->ct_name }}</td> 
+                          
 
-                                  <?php
-                                  $a=$values->created_at->format('d/m/Y');
-
-                                  ?>
-
-                                  <td><?php echo $a; ?></td>
-
-                                  <td><a type="button" class="btn btn-primary" href="{{ url('editcpn/'.$values->cp_id)}}" >edit</a>
+                          
+                            <td>{{ $values->dm_name }}</td>
                                   
-                              <a class="btn btn-primary" href="{{'deletecpn/'.$values->cp_id}}" >delete</a>
+                                  <td>@if($values->dm_type==0)
+                                    <span class="btn btn-success">Veg</span>
+                                  @else
+                                  <span class="btn btn-danger">Nonveg</span>
+                                  @endif
+                                </td>
+                                 
+                                  <td><img src="{{url('uploads/dishimage/'.$values->dm_image)}}"></td>
+                                  <td>@if($values->dm_status==1)
+                                    <span class="btn btn-success">active</span>
+                                  @else
+                                  <span class="btn btn-danger">Inactive</span>
+                                  @endif
+                                 </td> 
+
+                                  <td>{{ $values->dishdetail->dd_portion }}</td>
+                                    
+                                     
+
+                                  <td>
+                                    
+                                    
+                                     <a type="button" class="fa fa-pencil" href="{{ url('editdish/'.$values->dm_id)}}" ></a>
+                                  
+                              <a class="fa fa-trash" data-toggle="modal" data-target="#dishdelete" ></a>
                             </td>
                             
                             
                         </tr>
                         @endforeach
+                                     
+
                         
 
                       </tbody>
@@ -61,3 +77,26 @@
               </div>
             </div>
           </div>
+
+<!-- delete modal -->
+<div class="modal fade" id="dishdelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Dish Details</h3>
+       
+      </div>
+      <div class="modal-body">
+      Are you sure want to delete?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-primary" href="{{'deletedish/'.$values->dm_id}}">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@endsection
+

@@ -8,8 +8,8 @@
               <h1>Category Details</h1>
               
                
-               <button type="button" class="btn btn-primary modalOpener" data-id="" data-catname="" data-order="" data-status="">
-  Add Category
+               <button type="button" class="btn btn-primary modalOpener"  data-id="" data-uname="" data-email="" data-active="0">
+  Add 
 </button>  @if (session()->has('success'))
                   <div class="alert alert-success">
                     {{ session()->get('success') }}
@@ -30,7 +30,7 @@
                         <tr>
                             
                             <th>Name</th>
-                            <th>Order</th>
+                            <th>Email</th>
                             <th>Status</th>
                             <th>addedon</th>
                             <th>Actions</th>
@@ -38,10 +38,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @foreach($categorys as $values)
+                        @foreach($admins as $values)
                                 <tr>
-                                  <td>{{$values->ct_name}}</td>
-                                  <td>{{$values->ct_order}}</td>
+                                  <td>{{$values->ad_uname}}</td>
+                                  <td>{{$values->ad_email}}</td>
                                   <td>@if($values->ct_status==1)
                                     <span class="btn btn-success">active</span>
                                   @else
@@ -58,9 +58,8 @@
 
                                 <td>
                                   
-                              <a type="button" class="fa fa-pencil modalOpener" data-id="{{$values->ct_id}}" data-catname="{{$values->ct_name}}" data-order="{{$values->ct_order}}" data-status="{{$values->ct_status}}"></a>
-                              <!-- <a type="button" class="btn btn-danger" href="{{url('delete/'.$values->ct_id)}}">delete</a> <i class="fa fa-pencil"></i>-->
-                              <a type="button" class="fa fa-trash" data-toggle="modal" data-target="#categorydelete" ></a>
+                              <a class="btn btn-primary modalOpener" data-id="{{$values->ad_id}}" data-uname="{{$values->ad_uname}}" data-email="{{$values->ad_email}}" data-active="{{$values->ad_status}}">edit</a>
+                              <a type="button" class="btn btn-danger" href="{{url('delete/'.$values->ad_id)}}">delete</a>
                             </td>
                             
                         </tr>
@@ -81,51 +80,71 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="catModalHead">Update Category Details</h5>
+        <h5 class="modal-title" id="catModalHead">Admin Details</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div id="success_message"></div>
       <div class="modal-body">
-        <ul id="saveform_errList"></ul>
       
-                  <form method="post" action="{{ url('/category_action')}}" id="categoryform">
+                  <form method="post" action="{{ url('/admin_action')}}">
                       
                @csrf
                     <div class="form-group">
-                       <input type="hidden" name="id" id="catId" value=""> 
-                      <label for="category">Title</label>
-                      <input type="text" class="form-control" placeholder="category" id="catName" name="catName" value="">
-                      <span class="text-danger" id="name-error"></span>
-                      
+                       <input type="hidden" name="id" id="adId" value=""> 
+                      <label for="uname">Uname</label>
+                      <input type="text" class="form-control @error('category') is-invalid @enderror"  placeholder="username" id="username" name="username" value="">
+                      <!-- @error('category') -->
+                      <!-- <div class="invalid-feedback"> -->
+                       <!-- {{ $message }} -->
+                      <!-- </div> -->
+                      <!-- @enderror -->
                       <!-- @error('category') -->
                   <!-- <div>{{$message}}</div> -->
                   <!-- @enderror -->
                     </div>
                     <div class="form-group">
-                      <label for="order">order</label>
-                      <input type="text" class="form-control" id="order" placeholder="order" name="order" value="">
-                      <span class="text-danger" id="order-error"></span>
-                        
+                      <label for="passwpord">pwd</label>
+                      <input type="text" class="form-control @error('order') is-invalid @enderror" id="password" placeholder="password" name="password" value="">
+                        @error('order')
+                      <div class="invalid-feedback">
+                       {{ $message }}
+                      </div>
+                      @enderror
+                      <!-- @error('order') -->
+                  <!-- <div>{{$message}}</div> -->
+                  <!-- @enderror -->
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="text" class="form-control @error('order') is-invalid @enderror" id="email" placeholder="email" name="email" value="">
+                        <!-- @error('order') -->
+                      <!-- <div class="invalid-feedback"> -->
+                       <!-- {{ $message }} -->
+                      <!-- </div> -->
+                      <!-- @enderror -->
                       <!-- @error('order') -->
                   <!-- <div>{{$message}}</div> -->
                   <!-- @enderror -->
                     </div>
                     <div class="form-group">
                       <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status" value="1">
+                        <select class="form-control @error('status') is-invalid @enderror" id="active" name="status" value="">
+                          <!-- @error('status') -->
+                      <!-- <div class="invalid-feedback"> -->
+                       <!-- {{ $message }} -->
+                      <!-- </div> -->
+                      <!-- @enderror -->
                           <option value="1">Active</option>
                           <option value="0">Inactive</option>
                         </select>
-                        <span class="text-danger" id="status-error"></span>
                         <!-- @error('status') -->
                   <!-- <div>{{$message}}</div> -->
                   <!-- @enderror -->
                       </div>
                     
                      <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" name="category_btn" id="catModalfooter"></button>
+                    <button type="submit" class="btn btn-primary mr-2" name="category_btn" id="catModalfooter">submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div>
                      
 
@@ -138,29 +157,6 @@
    </div>
  </div>
 </div>
-
-
-<!-- delete modal -->
-
-<div class="modal fade" id="categorydelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLabel">Category Details</h3>
-        <!-- <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button> -->
-      </div>
-      <div class="modal-body">
-      Are you sure want to delete?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-primary" href="{{url('delete/'.$values->ct_id)}}">Delete</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- end delete modal -->
  
 @endsection
 @section("script")
@@ -169,54 +165,28 @@ $(document).ready(function(){
 $(".modalOpener").click(function(btn){
   btn.preventDefault();
   myid=$(this).data("id");
-  myname=$(this).data("catname");
-  myorder=$(this).data("order");
-  mystatus=$(this).data("status");
-  $("#catModalHead").html(myid?"Update Category Details":"Create Category");
-  $("#catModalfooter").html(myid?"save changes":"save");
-  $("#catId").val(myid);
-  $("#catName").val(myname);
-  $("#order").val(myorder);
-  $("#status").val(mystatus);
+  myname=$(this).data("uname");
+  myemail=$(this).data("email");
+  mystatus=$(this).data("active");
+  $("#adminModalHead").html(myid?"Update Details":"Create");
+  $("#adminModalfooter").html(myid?"save changes":"save");
+  $("#adId").val(myid);
+  $("#username").val(myname);
+  $("#email").val(myemail);
+  $("#active").val(mystatus);
   // catName
   $("#catModal").modal("show");
-  $("#name-error,#order-error,#status-error").html("");
-}); //end of modalopener
-
- $('#categoryform').on('submit',function(e){
-     e.preventDefault();
-
-    let catName = $('#catName').val();
-     let order = $('#order').val();
-    let status = $('#status').val();
-    
-     $.ajax({
-       url: "/category_action",
-       type:"POST",
-       data:{
-         "_token": "{{ csrf_token() }}",
-         catName:catName,
-         order:order,
-         status:status,
-         id:$("#catId").val()
-       },
-       success:function(response){
-         $('#successMsg').show();
-         console.log(response);
-         $("#catModal").modal("hide");
-         window.location.reload();
-       },
-       error: function(response) {
-         $('#name-error').text(response.responseJSON.errors.catName);
-         $('#order-error').text(response.responseJSON.errors.order);
-         $('#status-error').text(response.responseJSON.errors.status);
-       },
-       });
-     });
-
-
-
- }); 
-
+});  
+  
+});  
+@error('category')
+$('#catModal').modal('show');
+@enderror
+@error('order')
+$('#catModal').modal('show');
+@enderror
+@error('status')
+$('#catModal').modal('show');
+@enderror
 </script>       
 @endsection

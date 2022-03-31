@@ -35,19 +35,19 @@
                 <!-- @if($errors->any())
                 <h5>{{$errors->first()}}</h5>
                 @endif -->
-                {{Session::get('message')}}
+                {{Session::get('msg')}}
                 
                   
                 <div class="form-group">
                   <input type="email" class="form-control form-control-lg" id="admin_email" placeholder="email" name="email" value="{{old('email')}}">
                   @error('email')
-                  <div>{{$message}}</div>
+                  <div>{{$msg}}</div>
                   @enderror
                 </div>
                 <div class="form-group">
                   <input type="password" class="form-control form-control-lg" id="admin_password" placeholder="Password" name="password">
                   @error('password')
-                  <div>{{$message}}</div>
+                  <div>{{$msg}}</div>
                   @enderror
                 </div>
                 <div class="mt-3">

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class dishdetails extends Model
 {
     use HasFactory;
+    protected $primaryKey="dd_id";
+
+      
 }

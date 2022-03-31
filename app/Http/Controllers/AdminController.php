@@ -9,20 +9,58 @@ use App\Models\coupons;
 use App\Models\locations;
 use App\Models\dishdetails;
 use App\Models\dishmasters;
+use App\Models\admins;
+use App\Models\ordermasters;
+use App\Models\users;
+
+
 
 use DB;
 use Session;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
+    //adminlogin
+
+    public function loginaction(Request $request)
+    {
+         $request->validate([
+            'email' =>"required|email",
+             'password' => 'required|max:10']);    
+        $admin_email=$request->email;
+        $admin_password=$request->password;
+        $result=DB::table('admins')->where('ad_email',$admin_email)->where('ad_pwd',$admin_password)->first();                      
+        if($result)
+        {
+            Session::put('adminname',$result->ad_uname);
+            Session::put('adminid',$result->ad_id);
+            return redirect('/adminhome');
+        }
+        else
+        {
+            Session::put('msg','Email or password invalid');
+            return redirect('/admin');
+        }
+    }
+
+    public function logout(Request $request)
+    {
+      Auth::logout();
+      Session::flush();
+      return redirect('/admin');
+    }
+
     // viewing pages
 
     public function index()
     {
         $category=categorys::all();
-        
         return view("Admin.category",["categorys"=>$category]);
     }
 
@@ -43,63 +81,41 @@ class AdminController extends Controller
         $location=locations::all();
         return view("Admin.location",["locations"=>$location]);
     }
+
     public function dishindex()
     {
-        $dish=dishdetails::all();
-        return view("Admin.add_dish",["dishdetails"=>$dish]);
+
+         $dish=dishmasters::with('category','dishdetail')->get();
+        //$dish=dishmasters::all();
+         //dd($dish);
+        return view("Admin.dish",compact('dish'));
     }
-    public function dishdetails()
+
+    public function adminindex()
     {
-        $dish=dishdetails::all();
-        return view("Admin.create-edit-dish",["dishdetails"=>$dish]);
+        $admin=admins::all();
+        return view("Admin.admin",["admins"=>$admin]);
     }
-
-
-    // adding pages
-
-    public function addcategoryaction(Request $request)
+     public function orderindex()
     {
-        // $a=$request->post('order');
-        // dd($a);
-        $category=new categorys();
-        $category->ct_name=$request->input('category');
-        $category->ct_order=$request->input('order');
-        $category->ct_status=$request->input('status');
-        $category->save();
-        return redirect('/category');
+        $order=ordermasters::all();
+        return view("Admin.ordermaster",["ordermasters"=>$order]);
+    }
+     public function userindex()
+    {
+        $user=users::all();
+        return view("Admin.customer",["users"=>$user]);
+    }
+     public function changepwd()
+    {
+        $user=admins::all();
+        return view("Admin.changepassword",["admins"=>$user]);
     }
 
-    public function adddeliverboyaction(Request $request)
-    {
-        $delivery=new deliveryboys();
-        $delivery->dl_name=$request->input('delivery');
-        $delivery->dl_mob=$request->input('mob');
-        $delivery->dl_status=$request->input('status');
-        $delivery->save();
-        return redirect('/deliveryboy');
-    }
 
-     public function addcouponaction(Request $request)
-    {
-        $coupon=new coupons();
-        $coupon->cp_code=$request->input('code');
-        $coupon->cp_value=$request->input('cart');
-        $coupon->cp_cartmin=$request->input('value');
-        $coupon->cp_expiry=$request->input('expire');
-        $coupon->cp_status=$request->input('status');
-        $coupon->save();
-        return redirect('/coupon');
-    }
 
-     public function addlocationaction(Request $request)
-    {
-        $location=new locations();
-        $location->lo_name=$request->input('location');
-        $location->lo_deliverycharge=$request->input('delivery');
-        $location->lo_status=$request->input('deliverystatus');
-        $location->save();
-        return redirect('/location');
-    }
+
+    
     public function adddishaction(Request $request)
     {
         $master=new dishmasters();
@@ -107,7 +123,7 @@ class AdminController extends Controller
         $master->dm_name=$request->input('dish');
         $master->dm_description=$request->input('description');
         $master->dm_type=$request->input('type');
-        $master->dm_type=$request->input('dish_status');
+        $master->dm_status=$request->input('dish_status');
         if($request->hasfile('dishimage'))
         {
             $file=$request->file('dishimage');
@@ -122,7 +138,8 @@ class AdminController extends Controller
        $offers= $request->input('offer');
        $prices= $request->input('price');
        $statusarray= $request->input('portion_status');
-       foreach($portions as $index=>$portion){
+       foreach($portions as $index=>$portion)
+       {
         $dish=new dishdetails();
         $dish->dd_portion=$portion;
         $dish->dd_offerprice=$offers[$index];
@@ -133,41 +150,21 @@ class AdminController extends Controller
        }
         
 
-        return redirect('/dish-details');
+        return redirect('/dish');
     }
-
-
-    // edit action
-    public function editcategory($ct_id)
-    { 
-        $data=categorys::find($ct_id);
-
-        return view('Admin.categoryedit',compact('data'));
-    }
-
-    public function editdeliveryboy($dl_id)
-    {
-        $delivery=deliveryboys::find($dl_id);
-        return view('Admin.editdeliveryboy',compact('delivery'));
-    }
-
-    public function editcoupon($cp_id)
-    {
-        $coupon=coupons::find($cp_id);
-        return view('Admin.editcoupon',compact('coupon'));
-    }
-
-    public function editlocation($lo_id)
-    {
-        $location=locations::find($lo_id);
-        return view('Admin.editlocation',compact('location'));
-    }
-
 
 
     // update action
     public function updatecategory(Request $request)
     {
+
+         $request->validate([
+            'catName'      => 'required',
+             'order'       => "required|unique:categorys,ct_order,{$request->post('id')},ct_id",
+             
+             'status'        => 'required',
+        ]);
+
 
         $id=$request->post('id');
         if($id){
@@ -175,124 +172,219 @@ class AdminController extends Controller
         else{
         $cat=new categorys();     
         }
-        $cat->ct_name=$request->post('category');
+        $cat->ct_name=$request->post('catName');
         $cat->ct_order=$request->post('order');
         $cat->ct_status=$request->post('status');
         $cat->save();
-        return redirect('/category');
+        //return redirect()->back()->with('success','successfully added');
+        return response()->json(['success'=>'Successfully']);
+    
     }
 
      //update deliveryboy
     
     public function updatedeliveryboy(Request $request)
     {
+        request()->validate([
+            'delname' => "required",
+             'mobile' => "required|unique:deliveryboys,dl_mob,{$request->post('id')},dl_id",
+             'status' => 'required',
+         ]);
         $id=$request->post('id');
-        $del=deliveryboys::find($id);
-        $del->dl_name=$request->post('del');
-        $del->dl_mob=$request->post('mob');
+        if($id){
+            $del=deliveryboys::find($id);}
+            else{
+                $del=new deliveryboys();
+            }
+        
+        $del->dl_name=$request->post('delname');
+        $del->dl_mob=$request->post('mobile');
         $del->dl_status=$request->post('status');
         $del->save();
-        return redirect('/deliveryboy');
+        return redirect()->back()->with('success','successfully added');
     }
 
     //update coupon
 
     public function updatecoupon(Request $request)
     {
+        request()->validate([
+            'cpncode' => "required|unique:coupons,cp_code,{$request->post('id')},cp_id",
+             'cpnvalue' => 'required',
+             'cpncart' => 'required',
+             'cpnexpire' => 'required',
+             'cpnstatus' => 'required',
+         ]);
         $id=$request->post('id');
-        $cpn=coupons::find($id);
-        $cpn->cp_code=$request->post('code');
-        $cpn->cp_value=$request->post('value');
-        $cpn->cp_cartmin=$request->post('cart');
-        $cpn->cp_expiry=$request->post('expire');
-        $cpn->cp_status=$request->post('status');
+        if($id){
+         $cpn=coupons::find($id);}
+         else{
+                $cpn=new coupons();
+
+         }
+        
+        $cpn->cp_code=$request->post('cpncode');
+        $cpn->cp_value=$request->post('cpnvalue');
+        $cpn->cp_cartmin=$request->post('cpncart');
+        $cpn->cp_expiry=$request->post('cpnexpire');
+        $cpn->cp_status=$request->post('cpnstatus');
         $cpn->save();
-        return redirect('/coupon');
+        return redirect()->back()->with('success','successfully added');
     }
 
     //update location
 
      public function updatelocation(Request $request)
     {
+        request()->validate([
+             'locname' => 'required',
+             'locdelcharge' => 'required',
+             'locstatus' => 'required',
+         ]);
         $id=$request->post('id');
-        $loc=locations::find($id);
-        $loc->lo_name=$request->post('location');
-        $loc->lo_status=$request->post('deliverystatus');
-        $loc->lo_deliverycharge=$request->post('delivery');
+        if($id){
+        $loc=locations::find($id);}
+        else{
+            $loc=new locations();
+        }
+        $loc->lo_name=$request->post('locname');
+        $loc->lo_deliverycharge=$request->post('locdelcharge');
+        $loc->lo_status=$request->post('locstatus');
         $loc->save();
-        return redirect('/location');
+        return redirect()->back()->with('success','successfully added');
     }
-    
-    // delete category
+
+     public function updateadmin(Request $request)
+    {
+        //request()->validate([
+            //'del' => "required",
+             //'mob' => 'required|min:10|max:10|unique:deliveryboys,dl_mob']);
+        $id=$request->post('id');
+        if($id){
+            $admin=admins::find($id);}
+            else{
+                $admin=new admins();
+            }
+        
+        $admin->ad_uname=$request->post('username');
+        $admin->ad_pwd=$request->post('password');
+        $admin->ad_email=$request->post('email');
+        $admin->ad_status=$request->post('status');
+        $admin->save();
+        return redirect()->back()->with('success','successfully added');
+    }
+
+    //update dish
+    public function editdish($dmid)
+    {
+        $master=dishmasters::find($dmid);
+        // dd($master);
+        $detail=dishdetails::where('dm_id','=',$dmid)->get();
+        //dd($detail);
+        // print_r($detail);
+        return view("Admin.editdish",compact('master','detail')); 
+    }
+
+    public function updatedish(Request $request)
+    {
+        $id=$request->post('id');
+        //dd($id);
+        // dd($request->input('ct_id'));
+        $master=dishmasters::find($id);
+        $master->ct_id=$request->input('ct_id');
+        $master->dm_name=$request->input('dish');
+        $master->dm_description=$request->input('description');
+        $master->dm_type=$request->input('type');
+        $master->dm_status=$request->input('dish_status');
+        if($request->hasfile('dishimage'))
+        {
+            $destination ='uploads/dishimage'.$master->dm_image;
+            if(File::exists($destination))
+            {
+                File::delete($destination);
+            } 
+            $file=$request->file('dishimage');
+            $extension=$file->getClientOriginalExtension();
+            $filename=time().'.'.$extension;
+            $file->move('uploads/dishimage',$filename);
+            $master->dm_image=$filename;
+        }
+        $master->save();
+
+       $portions= $request->input('portion');
+       // dd($portions);
+       $offers= $request->input('offer');
+       $prices= $request->input('price');
+       $statusarray= $request->input('portion_status');
+       foreach($portions as $index=>$portion)
+       {
+        // dd($portion);
+        $id=$request->post('did');
+        //dd($request->input('portion_status'));
+         //dd($id);
+        //$dish=dishdetails::find($id);
+        // dd($dish);
+        $dish->dd_portion=$portion;
+        $dish->dd_offerprice=$offers[$index];
+        $dish->dd_price=$prices[$index];
+        $dish->dd_status=$statusarray[$index];
+        $dish->dm_id=$master->dm_id;
+        $dish->save();
+        // dd($index);
+       }
+
+    }
+
+    // delete
     public function categorydelete($ct_id)
     {
     
         $data=categorys::find($ct_id);
         $data->delete();
-        return redirect('/category');
+        return redirect()->back()->with('message','Category details Deleted');
     }
 
-    //delete deliveryboy
     public function deliveryboydelete($dl_id)
     {
-    
         $delivery=deliveryboys::find($dl_id);
         $delivery->delete();
-        return redirect('/deliveryboy');
+        return redirect()->back()->with('message','deliveryboy details Deleted');;
     }
     
-    //delete coupon
      public function coupondelete($cp_id)
     {
-    
         $coupon=coupons::find($cp_id);
-
         $coupon->delete();
-        return redirect('/coupon');
+        return redirect()->back()->with('message','coupon details Deleted');;
     }
 
-    //delete location
     public function locationdelete($lo_id)
     {
-    
         $location=locations::find($lo_id);
-
         $location->delete();
-        return redirect('/location');
+        return redirect()->back()->with('message','location details Deleted');;
     }
 
-    //adminlogin
-
-    public function loginaction(Request $request)
+    public function dishdelete($dm_id)
     {
-         $request->validate([
-            'email' =>"required|email",
-             'password' => 'required|max:10']);    
+        $dishmaster=dishmasters::find($dm_id);
         
-        $admin_email=$request->email;
-        
-        $admin_password=$request->password;
-        $result=DB::table('admins')->where('ad_email',$admin_email)->where('ad_pwd',$admin_password)->first();
-
-        
-                                
-
-        if($result){
-            Session::put('adminname',$result->ad_uname);
-            Session::put('adminid',$result->ad_id);
-            return redirect('/adminhome');
-        }else{
-            Session::put('message','Email or password invalid');
-            return redirect('/admin');
-        }
-        }
-
-    public function logout(Request $request)
-    {
-      Auth::logout();
-      Session::flush();
-      return redirect('/admin');
+        $dishmaster->delete();
+        return redirect('/dish');
     }
+
+    protected function authenticated()
+    {
+        if(auth::admins()->ad_status == '1'){
+         return redirect('/category')->with('status','welcome admin');
+        }   
+        elseif(auth::admins()->ad_status == '0')
+        {
+        return redirect('/admin')->with('status','');
+        }
+
+    }
+    
 }
 
 
