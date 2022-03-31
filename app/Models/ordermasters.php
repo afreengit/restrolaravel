@@ -12,7 +12,7 @@ class ordermasters extends Model
     protected $primaryKey='om_id';
     protected $keyType = 'int';
     public $incrementing =true;
-    protected $fillable[
+    protected $fillable=[
         'om_totalprice',
         'om_paymentmode',
         'om_phone',

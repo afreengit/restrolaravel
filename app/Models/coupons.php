@@ -12,7 +12,7 @@ class coupons extends Model
     protected $primaryKey='cp_id';
     protected $keyType = 'int';
     public $incrementing =true;
-    protected $fillable[
+    protected $fillable=[
         'cp_coupon',
         'cp_value',
         'cp_cartmin',

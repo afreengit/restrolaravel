@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class dishdetails extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-    protected $primaryKey="dd_id";
-
-      
-=======
     protected $table='dishdetails';
     protected $primaryKey='dd_id';
     protected $keyType = 'int';
@@ -32,5 +27,4 @@ class dishdetails extends Model
     // {
     //     return $this->hasMany('dishcarts');
     // }
->>>>>>> 53b84cef6e7d3eb86387ac4b933a4c1aa9c99fa5
 }

@@ -12,7 +12,7 @@ class locations extends Model
     protected $primaryKey='lo_id';
     protected $keyType = 'int';
     public $incrementing =true; 
-    protected $fillable[
+    protected $fillable=[
         'lo_name',
         'lo_status',
         'lo_deliverycharge',

@@ -12,9 +12,9 @@ class deliveryboys extends Model
     protected $primaryKey='dl_id';
     protected $keyType = 'int';
     public $incrementing =true;
-    protected $fillable[
+    protected $fillable=[
         'dl_name',
         'dl_mob',
-        'dl_status',
+        'dl_status'
     ];
 }
